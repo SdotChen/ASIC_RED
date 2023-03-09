@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: ASIC-RED
-    # given-names: Chen
+  - family-names: Shicong
+    given-names: Chen
     orcid: https://orcid.org/0000-0001-9089-5191
 title: "ASIC-RED"
 version: 1.0
