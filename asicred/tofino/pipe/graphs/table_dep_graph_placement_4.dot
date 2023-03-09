@@ -1,0 +1,110 @@
+digraph table_deps {
+  splines=ortho; rankdir=LR;
+  label="Program: asicred
+RunId: 9d21414c54426549
+";
+  labelloc=t; labeljust=l;
+  { "cond-8"; "Ingress.drop_recirc_t"; "cond-9"; "Ingress.multicast_t"; "Ingress.set_p4_header_t"; "cond-10"; "Egress.mod_header_t"; "Egress.mod_dst_mac_t"; "Egress.update_seq_eg_t"; "Egress.process_t"; }
+  { rank = same; "Ingress.set_meter_t"; "Ingress.update_seq_ig_t"; "Ingress.set_drop_prob_t"; "Ingress.set_seq_recirc_t"; "Ingress.set_aver_qdepth_t"; "Ingress.get_drop_prob_t"; "Ingress.get_seq_recirc_t"; "Ingress.get_aver_qdepth_t"; "cond-13"; "Egress.set_writer_t"; "Egress.get_and_set_sum_qdepth_t"; "Egress.get_writer_t"; }
+  { rank = same; "cond-11"; "Ingress.get_rndnum_t"; "Egress.get_aver_qdepth_t"; "Egress.get_and_set_reader_t"; }
+  { rank = same; "Ingress.get_diff_t"; "Egress.get_weighted_qdepth_t"; "cond-14"; "tbl_asicred917"; "Egress.get_ewma_t"; }
+  { rank = same; "cond-12"; "Ingress.drop_t"; "Egress.set_qdepth_t"; "Egress.get_qdepth_t"; }
+  { rank = same; "Egress.map_qdepth_to_prob_t"; }
+   "cond-8" -> "Ingress.drop_recirc_t" [ label= "",color=green ];
+   "cond-8" -> "cond-9" [ label= "",color=green ];
+   "cond-9" -> "Ingress.multicast_t" [ label= "",color=green ];
+   "cond-9" -> "Ingress.set_p4_header_t" [ label= "",color=green ];
+   "cond-9" -> "Ingress.set_meter_t" [ label= "",color=green ];
+   "cond-9" -> "Ingress.update_seq_ig_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.set_drop_prob_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.set_seq_recirc_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.set_aver_qdepth_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.get_drop_prob_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.get_seq_recirc_t" [ label= "",color=green ];
+   "cond-10" -> "Ingress.get_aver_qdepth_t" [ label= "",color=green ];
+   "cond-11" -> "Ingress.get_rndnum_t" [ label= "",color=green ];
+   "cond-11" -> "Ingress.get_diff_t" [ label= "",color=green ];
+   "cond-11" -> "cond-12" [ label= "",color=green ];
+   "cond-12" -> "Ingress.drop_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.set_writer_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.get_and_set_sum_qdepth_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.get_aver_qdepth_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.get_weighted_qdepth_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.set_qdepth_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.get_writer_t" [ label= "",color=green ];
+   "cond-13" -> "Egress.get_and_set_reader_t" [ label= "",color=green ];
+   "cond-13" -> "cond-14" [ label= "",color=green ];
+   "cond-14" -> "tbl_asicred917" [ label= "",color=green ];
+   "cond-14" -> "Egress.get_ewma_t" [ label= "",color=green ];
+   "cond-14" -> "Egress.get_qdepth_t" [ label= "",color=green ];
+   "cond-14" -> "Egress.map_qdepth_to_prob_t" [ label= "",color=green ];
+   "Egress.mod_header_t" -> "Egress.set_qdepth_t" [ label= "",color=pink ];
+   "Egress.mod_header_t" -> "Egress.get_weighted_qdepth_t" [ label= "",color=pink ];
+   "Egress.mod_header_t" -> "Egress.map_qdepth_to_prob_t" [ label= "",color=pink ];
+   "Egress.mod_header_t" -> "Egress.get_qdepth_t" [ label= "",color=pink ];
+   "Egress.get_writer_t" -> "cond-14" [ label= "",color=black ];
+   "Egress.get_and_set_reader_t" -> "cond-14" [ label= "",color=black ];
+   "Egress.mod_dst_mac_t" -> "cond-13" [ label= "",color=black ];
+   "Egress.mod_header_t" -> "cond-13" [ label= "",color=black ];
+   "Egress.update_seq_eg_t" -> "cond-13" [ label= "",color=black ];
+   "Egress.process_t" -> "cond-13" [ label= "",color=black ];
+   "Ingress.multicast_t" -> "Ingress.set_meter_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.update_seq_ig_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.set_drop_prob_t" [ label= "",color=gold ];
+   "Ingress.set_p4_header_t" -> "Ingress.set_drop_prob_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.set_seq_recirc_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.set_aver_qdepth_t" [ label= "",color=gold ];
+   "Ingress.set_p4_header_t" -> "Ingress.set_aver_qdepth_t" [ label= "",color=gold ];
+   "Ingress.set_p4_header_t" -> "Ingress.get_drop_prob_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.get_drop_prob_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.get_seq_recirc_t" [ label= "",color=gold ];
+   "Ingress.set_p4_header_t" -> "Ingress.get_aver_qdepth_t" [ label= "",color=red ];
+   "Ingress.set_p4_header_t" -> "Ingress.get_aver_qdepth_t" [ label= "",color=gold ];
+   "Ingress.multicast_t" -> "Ingress.get_aver_qdepth_t" [ label= "",color=gold ];
+   "Ingress.set_meter_t" -> "cond-11" [ label= "",color=blue ];
+   "Ingress.get_rndnum_t" -> "Ingress.get_diff_t" [ label= "",color=blue ];
+   "Ingress.get_drop_prob_t" -> "Ingress.get_diff_t" [ label= "",color=blue ];
+   "Ingress.get_diff_t" -> "cond-12" [ label= "",color=blue ];
+   "Ingress.drop_recirc_t" -> "Ingress.drop_t" [ label= "",color=red ];
+   "Egress.process_t" -> "cond-13" [ label= "",color=blue ];
+   "Egress.process_t" -> "Egress.set_writer_t" [ label= "",color=gold ];
+   "Egress.process_t" -> "Egress.get_and_set_sum_qdepth_t" [ label= "",color=gold ];
+   "Egress.mod_header_t" -> "Egress.get_and_set_sum_qdepth_t" [ label= "",color=gold ];
+   "Egress.get_and_set_sum_qdepth_t" -> "Egress.get_aver_qdepth_t" [ label= "",color=blue ];
+   "Egress.get_aver_qdepth_t" -> "Egress.get_weighted_qdepth_t" [ label= "",color=blue ];
+   "Egress.process_t" -> "Egress.set_qdepth_t" [ label= "",color=gold ];
+   "Egress.get_weighted_qdepth_t" -> "Egress.set_qdepth_t" [ label= "",color=gold ];
+   "Egress.process_t" -> "Egress.get_writer_t" [ label= "",color=gold ];
+   "Egress.get_writer_t" -> "Egress.get_and_set_reader_t" [ label= "",color=gold ];
+   "Egress.get_and_set_reader_t" -> "cond-14" [ label= "",color=blue ];
+   "Egress.process_t" -> "Egress.get_ewma_t" [ label= "",color=gold ];
+   "Egress.get_ewma_t" -> "Egress.get_qdepth_t" [ label= "",color=red ];
+   "Egress.get_ewma_t" -> "Egress.get_qdepth_t" [ label= "",color=blue ];
+   "Egress.get_qdepth_t" -> "Egress.map_qdepth_to_prob_t" [ label= "",color=gold ];
+   "Egress.get_weighted_qdepth_t" -> "Egress.set_qdepth_t" [ label= "",color=pink ];
+   "Ingress.get_diff_t" -> "cond-12" [ label= "",color=pink ];
+   "Egress.get_aver_qdepth_t" -> "Egress.get_weighted_qdepth_t" [ label= "",color=pink ];
+   "Egress.get_and_set_reader_t" -> "cond-14" [ label= "",color=pink ];
+   "Egress.get_qdepth_t" -> "Egress.map_qdepth_to_prob_t" [ label= "",color=pink ];
+   "Ingress.set_meter_t" -> "cond-11" [ label= "",color=pink ];
+   "Ingress.get_drop_prob_t" -> "cond-11" [ label= "",color=pink ];
+   "Egress.get_and_set_sum_qdepth_t" -> "Egress.get_aver_qdepth_t" [ label= "",color=pink ];
+   "Egress.get_writer_t" -> "cond-14" [ label= "",color=pink ];
+   "Egress.get_writer_t" -> "Egress.get_and_set_reader_t" [ label= "",color=pink ];
+   "Egress.get_ewma_t" -> "Egress.get_qdepth_t" [ label= "",color=pink ];
+   "Ingress.drop_recirc_t" -> "cond-11" [ label= "",color=pink ];
+   "Ingress.multicast_t" -> "Ingress.set_meter_t" [ label= "",color=pink ];
+   "Ingress.multicast_t" -> "Ingress.update_seq_ig_t" [ label= "",color=pink ];
+   "Ingress.multicast_t" -> "cond-10" [ label= "",color=pink ];
+   "Ingress.set_p4_header_t" -> "cond-10" [ label= "",color=pink ];
+   "Ingress.get_rndnum_t" -> "Ingress.get_diff_t" [ label= "",color=pink ];
+   "Egress.mod_header_t" -> "cond-13" [ label= "",color=pink ];
+   "Egress.mod_dst_mac_t" -> "cond-13" [ label= "",color=pink ];
+   "Egress.update_seq_eg_t" -> "cond-13" [ label= "",color=pink ];
+   "Egress.process_t" -> "cond-13" [ label= "",color=pink ];
+  { rank=max;
+    subgraph cluster_legend { node [ shape=record; fontsize=10];
+      empty [label=<<table border="0" cellborder="0"><tr><td colspan="8">Edge colors</td></tr><tr><td><font color="gold">ixbar_read</font></td><td><font color="blue">action_read</font></td><td><font color="red">output</font></td><td><font color="navy">cont_conflict</font></td><td><font color="cyan">reduction_or_read</font></td><td><font color="cyan">reduction_or_output</font></td><td><font color="pink">anti_table_read</font></td><td><font color="pink">anti_next_action_read</font></td><td><font color="pink">anti_next_table_data</font></td><td><font color="pink">anti_next_table_control</font></td><td><font color="pink">anti_next_table_metadata</font></td><td><font color="black">exit</font></td><td><font color="green">control_action</font></td><td><font color="green">control_condition_true</font></td><td><font color="green">control_condition_false</font></td><td><font color="green">control_table_hit</font></td><td><font color="green">control_table_miss</font></td><td><font color="green">control_default_next_table</font></td><td><font color="green">control_exit</font></td></tr></table>>;]
+    }
+  }
+}

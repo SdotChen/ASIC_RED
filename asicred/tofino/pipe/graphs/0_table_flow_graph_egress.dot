@@ -1,0 +1,53 @@
+digraph egress {
+mod_dst_mac_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="mod_dst_mac_t_0\l\l
+M:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ hdr.ethernet.dst_addr\l
+ "];
+mod_header_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="mod_header_t_0\l\l
+R:\l
+ eg_intr_md_from_prsr.global_tstamp\l
+ eg_intr_md.enq_qdepth\l
+ eg_intr_md.deq_timedelta\l
+\lW:\l
+ hdr.p4_header.tstamp_eg\l
+ hdr.p4_header.enq_qdepth\l
+ hdr.p4_header.qdelta\l
+ "];
+update_seq_eg_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="update_seq_eg_t_0\l\l
+R:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ hdr.p4_header.seq_eg\l
+ "];
+process_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="process_t_0\l\l
+R:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ meta.option\l
+ "];
+cond_3 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.option == 2\l\l
+ "];
+add_sum_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="add_sum_qdepth_t_0\l\l
+R:\l
+ hdr.p4_header.enq_qdepth\l
+\l "];
+cond_4 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.option == 3\l\l
+ "];
+drop_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="drop_t_0\l\l
+W:\l
+ eg_intr_md_for_dprsr.drop_ctl\l
+ "];
+    PARSER -> mod_dst_mac_t_0
+    mod_dst_mac_t_0 -> mod_header_t_0
+    mod_header_t_0 -> update_seq_eg_t_0
+    update_seq_eg_t_0 -> process_t_0
+    process_t_0 -> cond_3
+    cond_3 -> add_sum_qdepth_t_0
+    cond_3 -> cond_4
+    add_sum_qdepth_t_0 -> DEPARSER
+    cond_4 -> drop_t_0
+    cond_4 -> DEPARSER
+    drop_t_0 -> DEPARSER
+}

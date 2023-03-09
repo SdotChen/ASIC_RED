@@ -1,0 +1,1125 @@
+{
+  "tables" : [
+    {
+      "name" : "Ingress.drop_recirc_t",
+      "actions" : [
+        {
+          "name" : "Ingress.drop",
+          "primitives" : [
+            {
+              "name" : "DropPrimitive",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.drop_ctl"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.multicast_t",
+      "actions" : [
+        {
+          "name" : "Ingress.multicast",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.mcast_grp_a"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.mcast_grp_a"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.set_p4_header_t",
+      "actions" : [
+        {
+          "name" : "Ingress.set_p4_header",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.seq_eg"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.tstamp_ig"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_from_prsr.global_tstamp"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.pad1"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "7"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "3w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.qid"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "31"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.qid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.enq_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.tstamp_eg"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.qdelta"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.pad2"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.drop_prob"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.aver_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.set_meter_t",
+      "actions" : [
+        {
+          "name" : "Ingress.set_meter",
+          "primitives" : [
+            {
+              "name" : "ExecuteMeterFromHashPrimitive",
+              "dst" : {
+                "type" : "meter",
+                "name" : "Ingress.aqm_meter"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.aqm_meter",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"]
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.color"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.update_seq_ig_t",
+      "actions" : [
+        {
+          "name" : "Ingress.update_seq_ig",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_seq_ig"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_seq_ig",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_update_seq_ig_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "memory_lo"
+                },
+                "output_dst" : "hdr.p4_header.seq_ig"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.set_drop_prob_t",
+      "actions" : [
+        {
+          "name" : "Ingress.set_drop_prob",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_drop_prob"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_drop_prob",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_set_drop_prob_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::hdr.p4_header.drop_prob"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.set_seq_recirc_t",
+      "actions" : [
+        {
+          "name" : "Ingress.set_seq_recirc",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_seq_recirc"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_seq_recirc",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_set_seq_recirc_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operation" : "+",
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "register_lo",
+                  "operand_2_type" : "immediate",
+                  "operand_2_value" : "32w1"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.set_aver_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Ingress.set_aver_qdepth",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_aver_qdepth"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_aver_qdepth",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_set_aver_qdepth_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::hdr.p4_header.aver_qdepth"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_drop_prob_t",
+      "actions" : [
+        {
+          "name" : "Ingress.get_drop_prob",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_drop_prob"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_drop_prob",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_drop_prob_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "meta.drop_prob"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_seq_recirc_t",
+      "actions" : [
+        {
+          "name" : "Ingress.get_seq_recirc",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_seq_recirc"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_seq_recirc",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_seq_recirc_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "hdr.p4_header.seq_recirc"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_aver_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Ingress.get_aver_qdepth",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.reg_aver_qdepth"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.reg_aver_qdepth",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_aver_qdepth_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "hdr.p4_header.aver_qdepth"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_rndnum_t",
+      "actions" : [
+        {
+          "name" : "Ingress.get_rndnum",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.rndnum"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "1023"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_diff_t",
+      "actions" : [
+        {
+          "name" : "Ingress.get_diff",
+          "primitives" : [
+            {
+              "name" : "DirectAluPrimitive",
+              "operation" : "ssubu",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.diff"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src2" : {
+                "type" : "phv",
+                "name" : "meta.drop_prob"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.drop_t",
+      "actions" : [
+        {
+          "name" : "Ingress.drop",
+          "primitives" : [
+            {
+              "name" : "DropPrimitive",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.drop_ctl"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.mod_dst_mac_t",
+      "actions" : [
+        {
+          "name" : "Egress.mod_dst_mac",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.dst_addr"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "dst_addr"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Egress.mod_header_t",
+      "actions" : [
+        {
+          "name" : "Egress.mod_header",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.tstamp_eg"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "eg_intr_md_from_prsr.global_tstamp"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.enq_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "8191"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "13w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.enq_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "524287"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "eg_intr_md.enq_qdepth"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.qdelta"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "16383"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "14w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.qdelta"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "262143"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "eg_intr_md.deq_timedelta"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.update_seq_eg_t",
+      "actions" : [
+        {
+          "name" : "Egress.update_seq_eg",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_seq_eg"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_seq_eg",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["eg_intr_md.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_update_seq_eg_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "hdr.p4_header.seq_eg"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.process_t",
+      "actions" : [
+        {
+          "name" : "Egress.process",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_process"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_process",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_process_0",
+                "single_bit_mode" : false,
+                "output_dst" : "meta.option"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.set_writer_t",
+      "actions" : [
+        {
+          "name" : "Egress.set_writer",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_writer"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_writer",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_set_writer_0",
+                "single_bit_mode" : false
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_and_set_sum_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_and_set_sum_qdepth",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_sum_qdepth"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_sum_qdepth",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_and_set_sum_qdepth_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "meta.sum_qdepth"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_aver_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_aver_qdepth",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.aver_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "meta.sum_qdepth"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_weighted_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_weighted_qdepth",
+          "primitives" : [
+            {
+              "name" : "ShiftPrimitive",
+              "operation" : "shru",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.weighted_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "meta.aver_qdepth"
+              },
+              "src2" : {
+                "type" : "immediate",
+                "name" : "9"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.set_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Egress.set_qdepth",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_aver_qdepth"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_aver_qdepth",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_set_qdepth_0",
+                "single_bit_mode" : false
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_writer_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_writer",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_writer"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_writer",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_writer_0",
+                "single_bit_mode" : false,
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "mem_lo"
+                },
+                "output_dst" : "meta.num_writer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_and_set_reader_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_and_set_reader",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_reader"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_reader",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_and_set_reader_0",
+                "single_bit_mode" : false,
+                "output_dst" : "meta.drop_recirc"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_asicred917",
+      "actions" : [
+        {
+          "name" : "asicred917",
+          "primitives" : [
+            {
+              "name" : "DropPrimitive",
+              "dst" : {
+                "type" : "phv",
+                "name" : "eg_intr_md_for_dprsr.drop_ctl"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_ewma_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_ewma",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Egress.reg_aver_qdepth"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Egress.reg_aver_qdepth",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["hdr.p4_header.egress_port"],
+              "stateful_alu_details" : {
+                "name" : "_get_qdepth_0",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operation" : "+",
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "register_hi"
+                },
+                "output_value" : {
+                  "operand_1_type" : "memory",
+                  "operand_1_value" : "memory_lo"
+                },
+                "output_dst" : "hdr.p4_header.aver_qdepth"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.get_qdepth_t",
+      "actions" : [
+        {
+          "name" : "Egress.get_qdepth",
+          "primitives" : [
+            {
+              "name" : "ShiftPrimitive",
+              "operation" : "shl",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.aver_qdepth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "0"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.aver_qdepth"
+              },
+              "src2" : {
+                "type" : "immediate",
+                "name" : "9"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.qdepth_for_match"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.aver_qdepth"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.qdepth_for_match"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "9w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.map_qdepth_to_prob_t",
+      "actions" : [
+        {
+          "name" : "Egress.map_qdepth_to_prob",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.drop_prob"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "63"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "6w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.p4_header.drop_prob"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "1023"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "prob"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

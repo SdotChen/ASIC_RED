@@ -1,0 +1,96 @@
+digraph ingress {
+multicast_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="multicast_t_0\l\l
+M:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ ig_intr_md_for_tm.mcast_grp_a\l
+ hdr.p4_header.egress_port\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+set_p4_header_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_p4_header_t_0\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+ ig_intr_md_for_tm.qid\l
+\lW:\l
+ hdr.p4_header.seq_eg\l
+ hdr.p4_header.tstamp_ig\l
+ hdr.p4_header.pad1\l
+ hdr.p4_header.qid\l
+ hdr.p4_header.enq_qdepth\l
+ hdr.p4_header.tstamp_eg\l
+ hdr.p4_header.qdelta\l
+ hdr.p4_header.pad2\l
+ hdr.p4_header.cong_flag\l
+ hdr.p4_header.drop_prob\l
+ hdr.p4_header.aver_qdepth\l
+ "];
+set_meter_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_meter_t_0\l\l
+W:\l
+ hdr.p4_header.color\l
+ "];
+update_seq_ig_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="update_seq_ig_t_0\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ hdr.p4_header.seq_ig\l
+ "];
+cond_4 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_intr_md.ingress_port == 68\l\l
+ "];
+set_drop_prob_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_drop_prob_t_0\l\l
+R:\l
+ hdr.p4_header.drop_prob\l
+\l "];
+get_drop_prob_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_drop_prob_t_0\l\l
+R:\l
+ hdr.p4_header.drop_prob\l
+\lW:\l
+ meta.drop_prob\l
+ "];
+cond_5 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.p4_header.color[1:1] == 1\l\l
+ "];
+set_p4hdr_cong_flag_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_p4hdr_cong_flag_t_0\l\l
+W:\l
+ hdr.p4_header.cong_flag\l
+ "];
+get_rndnum_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_rndnum_t_0\l\l
+W:\l
+ meta.rndnum\l
+ "];
+get_diff_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_diff_t_0\l\l
+R:\l
+ meta.rndnum\l
+ meta.drop_prob\l
+\lW:\l
+ meta.diff\l
+ "];
+get_if_drop_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_if_drop_t_0\l\l
+R:\l
+ meta.diff\l
+\lW:\l
+ meta.if_drop\l
+ "];
+cond_6 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.if_drop == 1\l\l
+ "];
+drop_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="drop_t_0\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+    PARSER -> multicast_t_0
+    multicast_t_0 -> set_p4_header_t_0
+    set_p4_header_t_0 -> set_meter_t_0
+    set_meter_t_0 -> update_seq_ig_t_0
+    update_seq_ig_t_0 -> cond_4
+    cond_4 -> set_drop_prob_t_0
+    cond_4 -> get_drop_prob_t_0
+    set_drop_prob_t_0 -> cond_5
+    get_drop_prob_t_0 -> cond_5
+    cond_5 -> set_p4hdr_cong_flag_t_0
+    cond_5 -> DEPARSER
+    set_p4hdr_cong_flag_t_0 -> get_rndnum_t_0
+    get_rndnum_t_0 -> get_diff_t_0
+    get_diff_t_0 -> get_if_drop_t_0
+    get_if_drop_t_0 -> cond_6
+    cond_6 -> drop_t_0
+    cond_6 -> DEPARSER
+    drop_t_0 -> DEPARSER
+}

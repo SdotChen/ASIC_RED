@@ -1,0 +1,7 @@
+--- BEGIN PHV ALLOCATION ----------------------------------------------------
+
+@pa_atomic specifies that egress::eg_intr_md_from_prsr.parser_err should be marked no_split
+@pa_atomic specifies that ingress::ig_intr_md_from_prsr.parser_err should be marked no_split
+
+allocation(default_alloc_config): Try allocation for the 1th time
+allocation(default_alloc_config): Succeeded

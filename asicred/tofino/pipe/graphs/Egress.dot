@@ -1,0 +1,45 @@
+digraph Egress {
+subgraph cluster {
+graph [
+label="", labeljust=r, style=bold];
+0[label=__START__, margin="", shape=rectangle, style=solid];
+1[label=__EXIT__, margin="", shape=rectangle, style=solid];
+2[label="Egress.mod_dst_mac_t", margin="", shape=ellipse, style=solid];
+3[label="Egress.mod_header_t", margin="", shape=ellipse, style=solid];
+4[label="Egress.update_seq_eg_t", margin="", shape=ellipse, style=solid];
+5[label="Egress.process_t", margin="", shape=ellipse, style=solid];
+6[label="meta.option & 1 == 0;", margin="", shape=rectangle, style=solid];
+7[label="Egress.set_writer_t", margin="", shape=ellipse, style=solid];
+8[label="Egress.get_and_set_sum_qdepth_t", margin="", shape=ellipse, style=solid];
+9[label="Egress.get_aver_qdepth_t", margin="", shape=ellipse, style=solid];
+10[label="Egress.get_weighted_qdepth_t", margin="", shape=ellipse, style=solid];
+11[label="Egress.set_qdepth_t", margin="", shape=ellipse, style=solid];
+12[label="Egress.get_writer_t", margin="", shape=ellipse, style=solid];
+13[label="Egress.get_and_set_reader_t", margin="", shape=ellipse, style=solid];
+14[label="meta.drop_recirc == 1;", margin="", shape=rectangle, style=solid];
+15[label=tbl_asicred917, margin="", shape=ellipse, style=solid];
+16[label="Egress.get_ewma_t", margin="", shape=ellipse, style=solid];
+17[label="Egress.get_qdepth_t", margin="", shape=ellipse, style=solid];
+18[label="Egress.map_qdepth_to_prob_t", margin="", shape=ellipse, style=solid];
+0 -> 2[label=""];
+2 -> 3[label=""];
+3 -> 4[label=""];
+4 -> 5[label=""];
+5 -> 6[label=""];
+6 -> 7[label=TRUE];
+6 -> 12[label=FALSE];
+7 -> 8[label=""];
+8 -> 9[label=""];
+9 -> 10[label=""];
+10 -> 11[label=""];
+11 -> 1[label=""];
+12 -> 13[label=""];
+13 -> 14[label=""];
+14 -> 15[label=TRUE];
+14 -> 16[label=FALSE];
+15 -> 1[label=""];
+16 -> 17[label=""];
+17 -> 18[label=""];
+18 -> 1[label=""];
+}
+}

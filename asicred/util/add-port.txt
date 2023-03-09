@@ -1,0 +1,10 @@
+ucli
+pm
+port-add 25/- 40g none
+port-add 27/- 40g none
+port-add 31/- 40g none
+port-enb -/-
+rate-period 1
+exit
+exit
+exit

@@ -1,0 +1,69 @@
+Parser Characterization Report:
+Number of states on ingress: 9
+
+Number of matches on ingress: 11
+
+Longest path (8 states) on ingress:
+    $entry_point
+    start
+    start.$split_0
+    start.$split_1
+    parse_tcp
+    parse_p4_header
+    parse_p4_header.$split_0
+    parse_p4_header.$split_1
+
+Average rate: 9.125 Bps
+Min packet size at 100 Gbps: 82 B (9 B payload)
+Max data rate for min-sized packets: 89.06 Gbps / 152.5 MPps
+
+Extractor usage:
++--------------------------+-------+-------+--------+--------+------------------+-------+
+|State                     |Match  |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
++--------------------------+-------+-------+--------+--------+------------------+-------+
+|$entry_point              |*      |0      |1       |1       |2                 |       |
+|start                     |*      |4      |4       |0       |8                 |       |
+|start.$split_0            |*      |1      |2       |4       |7                 |       |
+|start.$split_1            |0x06   |0      |0       |1       |1                 |       |
+|-                         |0x11   |0      |0       |1       |1                 |       |
+|-                         |0x**   |0      |0       |1       |1                 |       |
+|parse_udp                 |*      |1      |2       |1       |4                 |       |
+|parse_tcp                 |*      |1      |4       |3       |8                 |       |
+|parse_p4_header           |*      |3      |0       |4       |7                 |       |
+|parse_p4_header.$split_0  |*      |0      |0       |4       |4                 |       |
+|parse_p4_header.$split_1  |*      |0      |0       |1       |1                 |       |
++--------------------------+-------+-------+--------+--------+------------------+-------+
+Number of states on egress: 9
+
+Number of matches on egress: 11
+
+Longest path (8 states) on egress:
+    $entry_point
+    start
+    start.$split_0
+    start.$split_1
+    parse_tcp
+    parse_tcp.$split_0
+    parse_p4_header
+    parse_p4_header.$split_0
+
+Average rate: 9.125 Bps
+Min packet size at 100 Gbps: 82 B (9 B payload)
+Max data rate for min-sized packets: 89.06 Gbps / 152.5 MPps
+
+Extractor usage:
++--------------------------+-------+-------+--------+--------+------------------+-------+
+|State                     |Match  |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
++--------------------------+-------+-------+--------+--------+------------------+-------+
+|$entry_point              |*      |2      |0       |1       |3                 |       |
+|start                     |*      |1      |2       |2       |5                 |       |
+|start.$split_0            |*      |4      |2       |4       |10                |       |
+|start.$split_1            |0x06   |0      |0       |2       |2                 |       |
+|-                         |0x11   |0      |0       |2       |2                 |       |
+|-                         |0x**   |0      |0       |2       |2                 |       |
+|parse_tcp                 |*      |1      |4       |1       |6                 |       |
+|parse_tcp.$split_0        |*      |0      |4       |0       |4                 |       |
+|parse_udp                 |*      |1      |2       |1       |4                 |       |
+|parse_p4_header           |*      |3      |1       |4       |8                 |       |
+|parse_p4_header.$split_0  |*      |0      |1       |2       |3                 |       |
++--------------------------+-------+-------+--------+--------+------------------+-------+

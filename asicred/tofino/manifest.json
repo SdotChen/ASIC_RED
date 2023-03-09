@@ -1,0 +1,217 @@
+{
+  "conf_file": "asicred.conf",
+  "compile_command": "/sde/bf-sde-9.7.0/install/bin/bf-p4c --std p4-16 --target tofino --arch tna --bf-rt-schema asicred/tofino/bf-rt.json -o /root/asicred/tofino -g /root/asicred/asicred.p4",
+  "compilation_time": "29.373956203460693",
+  "programs": [
+    {
+      "event_log_file": "events.json",
+      "program_name": "asicred.p4",
+      "p4_version": "p4-16",
+      "pipes": [
+        {
+          "pipe_name": "pipe",
+          "pipe_id": 0,
+          "files": {
+            "resources": [
+              {
+                "type": "resources",
+                "path": "pipe/logs/resources.json"
+              }
+            ],
+            "context": {
+              "path": "pipe/context.json"
+            },
+            "graphs": [
+              {
+                "gress": "ingress",
+                "graph_type": "control",
+                "path": "pipe/graphs/Ingress.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "parser",
+                "path": "pipe/graphs/IngressParser.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "egress",
+                "graph_type": "control",
+                "path": "pipe/graphs/Egress.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "egress",
+                "graph_type": "parser",
+                "path": "pipe/graphs/EgressParser.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/table_dep_graph_placement_0.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/placement_graph.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/table_dep_graph_placement_1.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/table_dep_graph_placement_2.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/program_graph.dot",
+                "graph_format": ".dot"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/dep.json",
+                "graph_format": ".json"
+              },
+              {
+                "gress": "ingress",
+                "graph_type": "table",
+                "path": "pipe/graphs/power_graph.dot",
+                "graph_format": ".dot"
+              }
+            ],
+            "metrics": {
+              "path": "pipe/logs/metrics.json"
+            },
+            "logs": [
+              {
+                "path": "pipe/logs/flexible_packing.log",
+                "log_type": "parser"
+              },
+              {
+                "path": "pipe/logs/parser.characterize.log",
+                "log_type": "parser"
+              },
+              {
+                "path": "pipe/logs/parser.log",
+                "log_type": "parser"
+              },
+              {
+                "path": "pipe/logs/phv.json",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_0.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_3.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_history_0.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_history_3.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_summary_0.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/phv_allocation_summary_3.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/power.json",
+                "log_type": "power"
+              },
+              {
+                "path": "pipe/logs/pragmas.log",
+                "log_type": "phv"
+              },
+              {
+                "path": "pipe/logs/table_dependency_graph.log",
+                "log_type": "mau"
+              },
+              {
+                "path": "pipe/logs/table_placement_1.log",
+                "log_type": "mau"
+              },
+              {
+                "path": "pipe/logs/table_placement_2.log",
+                "log_type": "mau"
+              },
+              {
+                "path": "pipe/logs/table_placement_4.log",
+                "log_type": "mau"
+              },
+              {
+                "path": "pipe/logs/table_summary.log",
+                "log_type": "mau"
+              },
+              {
+                "path": "pipe/logs/mau.json",
+                "log_type": "mau"
+              }
+            ]
+          }
+        }
+      ],
+      "source_files": {
+        "defines": [
+          "__TARGET_TOFINO__=1",
+          "__p4c__=1",
+          "__p4c_major__=9",
+          "__p4c_minor__=7",
+          "__p4c_patchlevel__=0",
+          "__p4c_version__=\"9.7.0\""
+        ],
+        "src_root": "/root/asicred",
+        "includes": [
+          "/sde/bf-sde-9.7.0/install/share/p4c/p4include"
+        ],
+        "src_map": "source.json"
+      }
+    }
+  ],
+  "compilation_succeeded": true,
+  "architecture": "tna",
+  "architectureConfig": {
+    "name": "64q",
+    "pipes": [
+      {
+        "egress": {
+          "nextControl": [],
+          "pipeName": "Egress"
+        },
+        "ingress": {
+          "nextControl": [
+            {
+              "pipeName": "Egress",
+              "pipe": 0
+            }
+          ],
+          "pipeName": "Ingress"
+        },
+        "pipe": 0
+      }
+    ]
+  },
+  "schema_version": "2.0.5",
+  "target": "tofino",
+  "build_date": "Mon Mar  6 11:49:48 2023",
+  "run_id": "951e9c1727bad8a6",
+  "compiler_version": "9.7.0 (da5115f)"
+}

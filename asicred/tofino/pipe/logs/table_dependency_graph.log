@@ -1,0 +1,3075 @@
+FindDependencyGraph : After Instruction Selection
+ingress: [2875543] 0 00
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 00 000
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 0 00
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 0000
+  mod_dst_mac_t_0 @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false)
+    $true: [2891382] 0 00 000 0000
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 0 00
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 0 00
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0 @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_dst_mac_t_0 4 4
+     mod_header_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Just Before PHV allocation
+ingress: [2875543] 0 00
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 00 000
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 0 00
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 0000
+  mod_dst_mac_t_0 @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false)
+    $true: [2891382] 0 00 000 0000
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 0 00
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 0 00
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0 @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_dst_mac_t_0 4 4
+     mod_header_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Before Table Placement
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Before Table Placement
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Just Before PHV allocation
+ingress: [2875543] 0 00
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 00 000
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 0 00
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 0000
+  mod_dst_mac_t_0 @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false)
+    $true: [2891382] 0 00 000 0000
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 0 00
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 0 00
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0 @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_dst_mac_t_0 4 4
+     mod_header_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Before Table Placement
+ingress: [2875543] 1 11
+  cond-8(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(0)
+    $true: [2876008]
+      drop_recirc_t_0 @stage(0)
+    $false: [2876010]
+      cond-9(ingress::ig_intr_md.ingress_port == 8; => $true, ingress::ig_intr_md.ingress_port == 60; => $true, 1 => $false) @stage(0)
+        $true: [2875612] 0 10 100
+          multicast_t_0 @stage(0)
+          set_p4_header_t_0 @stage(1)
+          set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter  512
+          update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig  512
+  cond-10(ingress::ig_intr_md.ingress_port == 68; => $true, 1 => $false) @stage(2)
+    $true: [2876015] 0 00
+      set_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+    $false: [2876218] 0 00
+      get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob  512
+      get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc  512
+      get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth  512
+  cond-11(ingress::hdr.p4_header.color[1:1] == 1; => $true, 1 => $false) @stage(4)
+    $true: [2876435] 1 11
+      get_rndnum_t_0 @stage(4)
+      get_diff_t_0 @stage(5)
+      cond-12(ingress::meta.diff == 0; => $true, 1 => $false) @stage(7)
+        $true: [2876635]
+          drop_t_0 @stage(7)
+egress: [2891011] 0 00 000 1111
+  mod_dst_mac_t_0{ E -1+0, 8 0K } @stage(0)
+  mod_header_t_0 @stage(0)
+  update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg  512
+  process_t_0 @stage(1)
+    stateful Egress.reg_process  512
+  cond-13(egress::meta.option[0:0] & 1 == 0; => $true, 1 => $false) @stage(2)
+    $true: [2891382] 0 01 011 0111
+      set_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth  512
+      get_aver_qdepth_t_1 @stage(4)
+      get_weighted_qdepth_t_0 @stage(5)
+      set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth  512
+    $false: [2891715] 1 11
+      get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer  512
+      get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader  512
+      cond-14(egress::meta.drop_recirc == 1; => $true, 1 => $false)
+        $true: [2891860]
+          tbl_asicred917
+        $false: [2891922] 1 11
+          get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth  512
+          get_qdepth_t_0 @stage(7)
+          map_qdepth_to_prob_t_0{ T 32+0, 4 4K } @stage(8)
+
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : cond-9
+DepStagesThruDomFrontier postorder : cond-8
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : cond-10
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : cond-12
+DepStagesThruDomFrontier postorder : cond-11
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : cond-14
+DepStagesThruDomFrontier postorder : cond-13
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    cond-8 -- CONTROL_COND_TRUE --> drop_recirc_t_0
+    cond-8 -- CONTROL_COND_FALSE --> cond-9
+    cond-9 -- CONTROL_COND_TRUE --> multicast_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_p4_header_t_0
+    cond-9 -- CONTROL_COND_TRUE --> set_meter_t_0
+    cond-9 -- CONTROL_COND_TRUE --> update_seq_ig_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_drop_prob_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_TRUE --> set_aver_qdepth_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    cond-10 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_rndnum_t_0
+    cond-11 -- CONTROL_COND_TRUE --> get_diff_t_0
+    cond-11 -- CONTROL_COND_TRUE --> cond-12
+    cond-12 -- CONTROL_COND_TRUE --> drop_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_writer_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_and_set_sum_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> get_aver_qdepth_t_1
+    cond-13 -- CONTROL_COND_TRUE --> get_weighted_qdepth_t_0
+    cond-13 -- CONTROL_COND_TRUE --> set_qdepth_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_writer_t_0
+    cond-13 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    cond-13 -- CONTROL_COND_FALSE --> cond-14
+    cond-14 -- CONTROL_COND_TRUE --> tbl_asicred917
+    cond-14 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    cond-14 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    cond-14 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> set_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_weighted_qdepth_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> map_qdepth_to_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_METADATA --> get_qdepth_t_0
+    get_writer_t_0 -- ANTI_EXIT --> cond-14
+    get_and_set_reader_t_0 -- ANTI_EXIT --> cond-14
+    mod_dst_mac_t_0 -- ANTI_EXIT --> cond-13
+    mod_header_t_0 -- ANTI_EXIT --> cond-13
+    update_seq_eg_t_0 -- ANTI_EXIT --> cond-13
+    process_t_0 -- ANTI_EXIT --> cond-13
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    set_meter_t_0 -- ACTION_READ --> cond-11
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> cond-12
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> cond-13
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> cond-14
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-12
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-14
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    drop_recirc_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-11
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> set_meter_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> update_seq_ig_t_0
+    multicast_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-10
+    get_rndnum_t_0 -- ANTI_NEXT_TABLE_DATA --> get_diff_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    mod_dst_mac_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    update_seq_eg_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> cond-13
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-8 4 4
+     drop_recirc_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-8
+     cond-9 4 4
+	- Edge CONTROL_COND_FALSE cond-8
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_TRUE cond-9
+     set_p4_header_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-9
+     cond-10 2 2
+	- Edge ANTI_NEXT_TABLE_DATA multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_p4_header_t_0
+     mod_header_t_0 4 4
+     mod_dst_mac_t_0 4 4
+     update_seq_eg_t_0 4 4
+     process_t_0 5 5
+ Stage #1
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     update_seq_ig_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     get_drop_prob_t_0 2 2
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     cond-13 4 4
+	- Edge ACTION_READ process_t_0
+     set_writer_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_COND_TRUE cond-13
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE cond-13
+	- Edge IXBAR_READ process_t_0
+ Stage #2
+     cond-11 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_rndnum_t_0 2 2
+	- Edge CONTROL_COND_TRUE cond-11
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+     cond-14 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     tbl_asicred917 0 0
+	- Edge CONTROL_COND_TRUE cond-14
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE cond-14
+ Stage #4
+     cond-12 0 0
+	- Edge ACTION_READ get_diff_t_0
+     drop_t_0 0 0
+	- Edge CONTROL_COND_TRUE cond-12
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : After Table Placement
+ingress: [2875543] 1 11
+  3: drop_recirc_t_0(ingress::ig_intr_md.ingress_port == 68;, 1 => $false) @stage(0)
+    $false: [2876010]
+      4: multicast_t_0(ingress::ig_intr_md.ingress_port == 8;, ingress::ig_intr_md.ingress_port == 60;, 1 => $false){ GE 0+16, 4 0K } @stage(0)
+        $default: [2875612] 0 00
+          10: update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig 512 
+          11: set_p4_header_t_0 @stage(1)
+          12: set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter 512 
+        $false: [3239007]
+  20: set_drop_prob_t_0(ingress::ig_intr_md.ingress_port == 68;, 1 => $false) @stage(2)
+    stateful Ingress.reg_drop_prob 512 
+    $false: [2876218] 0 00
+      21: get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob 512 
+      30: get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth 512 
+      32: get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc 512 
+    $default: [2876015] 0
+      31: set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth 512 
+      33: set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc 512 
+  41: get_rndnum_t_0(ingress::hdr.p4_header.color[1:1] == 1;, 1 => $false) @stage(4)
+    $default: [2876435] 1
+      50: get_diff_t_0 @stage(5)
+      70: drop_t_0(ingress::meta.diff == 0;, 1 => $false) @stage(7)
+        $false: [3239727]
+    $false: [3239666]
+egress: [2891011] 0 00 000 1111
+  0: mod_header_t_0 @stage(0)
+  1: update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg 512 
+  2: mod_dst_mac_t_0{ E -1+32, 6 [1x1 1K] } @stage(0)
+  13: process_t_0 @stage(1)
+    stateful Egress.reg_process 512 
+  22: set_writer_t_0(egress::meta.option[0:0] & 1 == 0;, 1 => $false) @stage(2)
+    stateful Egress.reg_writer 512 
+    $false: [2891715] 1 11
+      23: get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer 512 
+      35: get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader 512 
+      42: tbl_asicred917(egress::meta.drop_recirc == 1;, 1 => $false)
+        $false: [2891922] 1 11
+          61: get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth 512 
+          71: get_qdepth_t_0 @stage(7)
+          80: map_qdepth_to_prob_t_0{ T 32+16, 4 6K } @stage(8)
+            $try_next_stage: [3240554]
+              90: map_qdepth_to_prob_t_0{ T 32+16, 4 5K } @stage(8)
+    $default: [2891382] 1 11 111
+      34: get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth 512 
+      40: get_aver_qdepth_t_1 @stage(4)
+      51: get_weighted_qdepth_t_0 @stage(5)
+      60: set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth 512 
+
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    drop_recirc_t_0 -- CONTROL_COND_FALSE --> multicast_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> update_seq_ig_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_p4_header_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_meter_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    set_drop_prob_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_aver_qdepth_t_0
+    set_drop_prob_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_seq_recirc_t_0
+    get_rndnum_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_diff_t_0
+    get_rndnum_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> drop_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> get_writer_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> tbl_asicred917
+    tbl_asicred917 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    tbl_asicred917 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    tbl_asicred917 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    map_qdepth_to_prob_t_0 -- CONTROL_TABLE_MISS --> map_qdepth_to_prob_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_and_set_sum_qdepth_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_aver_qdepth_t_1
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_weighted_qdepth_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    set_meter_t_0 -- ACTION_READ --> get_rndnum_t_0
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> drop_t_0
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> tbl_asicred917
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> drop_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> tbl_asicred917
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    update_seq_ig_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    update_seq_ig_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> set_writer_t_0
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> set_writer_t_0
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     drop_recirc_t_0 4 4
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_FALSE drop_recirc_t_0
+     set_p4_header_t_0 2 2
+	- Edge CONTROL_DEFAULT_NEXT_TABLE multicast_t_0
+     mod_header_t_0 4 4
+     update_seq_eg_t_0 0 0
+     mod_dst_mac_t_0 0 0
+     process_t_0 5 5
+ Stage #1
+     update_seq_ig_t_0 2 2
+	- Edge IXBAR_READ multicast_t_0
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 2 2
+	- Edge IXBAR_READ multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA update_seq_ig_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_meter_t_0
+     get_drop_prob_t_0 2 2
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     set_writer_t_0 4 4
+	- Edge ACTION_READ process_t_0
+	- Edge IXBAR_READ process_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE set_writer_t_0
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_writer_t_0
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+ Stage #2
+     get_rndnum_t_0 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     tbl_asicred917 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE tbl_asicred917
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+ Stage #4
+     drop_t_0 0 0
+	- Edge ACTION_READ get_diff_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+     map_qdepth_to_prob_t_0 0 0
+	- Edge CONTROL_TABLE_MISS map_qdepth_to_prob_t_0
+	- Edge IXBAR_READ get_qdepth_t_0
+
+FindDependencyGraph : Power Calculation
+ingress: [2875543] 1 11
+  3: drop_recirc_t_0(ingress::ig_intr_md.ingress_port == 68;, 1 => $false) @stage(0)
+    $false: [2876010]
+      4: multicast_t_0(ingress::ig_intr_md.ingress_port == 8;, ingress::ig_intr_md.ingress_port == 60;, 1 => $false){ GE 0+16, 4 0K } @stage(0)
+        $default: [2875612] 0 00
+          10: update_seq_ig_t_0 @stage(1)
+            stateful Ingress.reg_seq_ig 512 
+          11: set_p4_header_t_0 @stage(1)
+          12: set_meter_t_0 @stage(1)
+            meter Ingress.aqm_meter 512 
+        $false: [3239007]
+  20: set_drop_prob_t_0(ingress::ig_intr_md.ingress_port == 68;, 1 => $false) @stage(2)
+    stateful Ingress.reg_drop_prob 512 
+    $false: [2876218] 0 00
+      21: get_drop_prob_t_0 @stage(2)
+        stateful Ingress.reg_drop_prob 512 
+      30: get_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth 512 
+      32: get_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc 512 
+    $default: [2876015] 0
+      31: set_aver_qdepth_t_0 @stage(3)
+        stateful Ingress.reg_aver_qdepth 512 
+      33: set_seq_recirc_t_0 @stage(3)
+        stateful Ingress.reg_seq_recirc 512 
+  41: get_rndnum_t_0(ingress::hdr.p4_header.color[1:1] == 1;, 1 => $false) @stage(4)
+    $default: [2876435] 1
+      50: get_diff_t_0 @stage(5)
+      70: drop_t_0(ingress::meta.diff == 0;, 1 => $false) @stage(7)
+        $false: [3239727]
+    $false: [3239666]
+egress: [2891011] 0 00 000 1111
+  0: mod_header_t_0 @stage(0)
+  1: update_seq_eg_t_0 @stage(0)
+    stateful Egress.reg_seq_eg 512 
+  2: mod_dst_mac_t_0{ E -1+32, 6 [1x1 1K] } @stage(0)
+  13: process_t_0 @stage(1)
+    stateful Egress.reg_process 512 
+  22: set_writer_t_0(egress::meta.option[0:0] & 1 == 0;, 1 => $false) @stage(2)
+    stateful Egress.reg_writer 512 
+    $false: [2891715] 1 11
+      23: get_writer_t_0 @stage(2)
+        stateful Egress.reg_writer 512 
+      35: get_and_set_reader_t_0 @stage(3)
+        stateful Egress.reg_reader 512 
+      42: tbl_asicred917(egress::meta.drop_recirc == 1;, 1 => $false)
+        $false: [2891922] 1 11
+          61: get_ewma_t_0 @stage(6)
+            stateful Egress.reg_aver_qdepth 512 
+          71: get_qdepth_t_0 @stage(7)
+          80: map_qdepth_to_prob_t_0{ T 32+16, 4 6K } @stage(8)
+            $try_next_stage: [3240554]
+              90: map_qdepth_to_prob_t_0{ T 32+16, 4 5K } @stage(8)
+    $default: [2891382] 1 11 111
+      34: get_and_set_sum_qdepth_t_0 @stage(3)
+        stateful Egress.reg_sum_qdepth 512 
+      40: get_aver_qdepth_t_1 @stage(4)
+      51: get_weighted_qdepth_t_0 @stage(5)
+      60: set_qdepth_t_0 @stage(6)
+        stateful Egress.reg_aver_qdepth 512 
+
+DepStagesThruDomFrontier postorder : update_seq_ig_t_0
+DepStagesThruDomFrontier postorder : set_p4_header_t_0
+DepStagesThruDomFrontier postorder : set_meter_t_0
+DepStagesThruDomFrontier postorder : multicast_t_0
+DepStagesThruDomFrontier postorder : drop_recirc_t_0
+DepStagesThruDomFrontier postorder : get_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_aver_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_seq_recirc_t_0
+DepStagesThruDomFrontier postorder : set_drop_prob_t_0
+DepStagesThruDomFrontier postorder : get_diff_t_0
+DepStagesThruDomFrontier postorder : drop_t_0
+DepStagesThruDomFrontier postorder : get_rndnum_t_0
+DepStagesThruDomFrontier postorder : mod_header_t_0
+DepStagesThruDomFrontier postorder : update_seq_eg_t_0
+DepStagesThruDomFrontier postorder : mod_dst_mac_t_0
+DepStagesThruDomFrontier postorder : process_t_0
+DepStagesThruDomFrontier postorder : get_writer_t_0
+DepStagesThruDomFrontier postorder : get_and_set_reader_t_0
+DepStagesThruDomFrontier postorder : get_ewma_t_0
+DepStagesThruDomFrontier postorder : get_qdepth_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : map_qdepth_to_prob_t_0
+DepStagesThruDomFrontier postorder : tbl_asicred917
+DepStagesThruDomFrontier postorder : get_and_set_sum_qdepth_t_0
+DepStagesThruDomFrontier postorder : get_aver_qdepth_t_1
+DepStagesThruDomFrontier postorder : get_weighted_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_qdepth_t_0
+DepStagesThruDomFrontier postorder : set_writer_t_0
+    Maximum stage number according to dependences: 
+      INGRESS: 4
+      EGRESS: 5
+GRAPH
+    drop_recirc_t_0 -- CONTROL_COND_FALSE --> multicast_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> update_seq_ig_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_p4_header_t_0
+    multicast_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_meter_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_drop_prob_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_aver_qdepth_t_0
+    set_drop_prob_t_0 -- CONTROL_COND_FALSE --> get_seq_recirc_t_0
+    set_drop_prob_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_aver_qdepth_t_0
+    set_drop_prob_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_seq_recirc_t_0
+    get_rndnum_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_diff_t_0
+    get_rndnum_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> drop_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> get_writer_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> get_and_set_reader_t_0
+    set_writer_t_0 -- CONTROL_COND_FALSE --> tbl_asicred917
+    tbl_asicred917 -- CONTROL_COND_FALSE --> get_ewma_t_0
+    tbl_asicred917 -- CONTROL_COND_FALSE --> get_qdepth_t_0
+    tbl_asicred917 -- CONTROL_COND_FALSE --> map_qdepth_to_prob_t_0
+    map_qdepth_to_prob_t_0 -- CONTROL_TABLE_MISS --> map_qdepth_to_prob_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_and_set_sum_qdepth_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_aver_qdepth_t_1
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> get_weighted_qdepth_t_0
+    set_writer_t_0 -- CONTROL_DEFAULT_NEXT_TABLE --> set_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> update_seq_ig_t_0
+    multicast_t_0 -- IXBAR_READ --> set_meter_t_0
+    multicast_t_0 -- IXBAR_READ --> set_drop_prob_t_0
+    multicast_t_0 -- IXBAR_READ --> get_drop_prob_t_0
+    set_p4_header_t_0 -- OUTPUT --> get_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> get_seq_recirc_t_0
+    multicast_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    set_p4_header_t_0 -- IXBAR_READ --> set_aver_qdepth_t_0
+    multicast_t_0 -- IXBAR_READ --> set_seq_recirc_t_0
+    set_meter_t_0 -- ACTION_READ --> get_rndnum_t_0
+    get_rndnum_t_0 -- IXBAR_READ --> get_diff_t_0
+    get_drop_prob_t_0 -- ACTION_READ --> get_diff_t_0
+    get_diff_t_0 -- ACTION_READ --> drop_t_0
+    drop_recirc_t_0 -- OUTPUT --> drop_t_0
+    process_t_0 -- ACTION_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> set_writer_t_0
+    process_t_0 -- IXBAR_READ --> get_writer_t_0
+    get_writer_t_0 -- IXBAR_READ --> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -- ACTION_READ --> tbl_asicred917
+    process_t_0 -- IXBAR_READ --> get_ewma_t_0
+    get_ewma_t_0 -- OUTPUT --> get_qdepth_t_0
+    get_ewma_t_0 -- ACTION_READ --> get_qdepth_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    get_qdepth_t_0 -- IXBAR_READ --> map_qdepth_to_prob_t_0
+    process_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    mod_header_t_0 -- IXBAR_READ --> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ACTION_READ --> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -- ACTION_READ --> get_weighted_qdepth_t_0
+    process_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_weighted_qdepth_t_0 -- IXBAR_READ --> set_qdepth_t_0
+    get_diff_t_0 -- ANTI_NEXT_TABLE_DATA --> drop_t_0
+    get_weighted_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> set_qdepth_t_0
+    get_and_set_reader_t_0 -- ANTI_NEXT_TABLE_DATA --> tbl_asicred917
+    get_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> map_qdepth_to_prob_t_0
+    get_aver_qdepth_t_1 -- ANTI_NEXT_TABLE_DATA --> get_weighted_qdepth_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    get_drop_prob_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    get_writer_t_0 -- ANTI_NEXT_TABLE_DATA --> get_and_set_reader_t_0
+    get_ewma_t_0 -- ANTI_NEXT_TABLE_DATA --> get_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -- ANTI_NEXT_TABLE_DATA --> get_aver_qdepth_t_1
+    update_seq_ig_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> get_rndnum_t_0
+    update_seq_ig_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    set_p4_header_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    set_meter_t_0 -- ANTI_NEXT_TABLE_DATA --> set_drop_prob_t_0
+    mod_header_t_0 -- ANTI_NEXT_TABLE_DATA --> set_writer_t_0
+    process_t_0 -- ANTI_NEXT_TABLE_DATA --> set_writer_t_0
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     drop_recirc_t_0 4 4
+     multicast_t_0 4 4
+	- Edge CONTROL_COND_FALSE drop_recirc_t_0
+     set_p4_header_t_0 2 2
+	- Edge CONTROL_DEFAULT_NEXT_TABLE multicast_t_0
+     mod_header_t_0 4 4
+     update_seq_eg_t_0 0 0
+     mod_dst_mac_t_0 0 0
+     process_t_0 5 5
+ Stage #1
+     update_seq_ig_t_0 2 2
+	- Edge IXBAR_READ multicast_t_0
+     set_meter_t_0 3 3
+	- Edge IXBAR_READ multicast_t_0
+     set_drop_prob_t_0 2 2
+	- Edge IXBAR_READ multicast_t_0
+	- Edge ANTI_NEXT_TABLE_DATA update_seq_ig_t_0
+	- Edge ANTI_NEXT_TABLE_DATA set_meter_t_0
+     get_drop_prob_t_0 2 2
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_aver_qdepth_t_0 0 0
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge OUTPUT set_p4_header_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+	- Edge IXBAR_READ multicast_t_0
+     get_seq_recirc_t_0 0 0
+	- Edge CONTROL_COND_FALSE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     set_aver_qdepth_t_0 0 0
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+	- Edge IXBAR_READ set_p4_header_t_0
+     set_seq_recirc_t_0 0 0
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_drop_prob_t_0
+	- Edge IXBAR_READ multicast_t_0
+     set_writer_t_0 4 4
+	- Edge ACTION_READ process_t_0
+	- Edge IXBAR_READ process_t_0
+     get_writer_t_0 4 4
+	- Edge CONTROL_COND_FALSE set_writer_t_0
+	- Edge IXBAR_READ process_t_0
+     get_and_set_sum_qdepth_t_0 3 3
+	- Edge CONTROL_DEFAULT_NEXT_TABLE set_writer_t_0
+	- Edge IXBAR_READ process_t_0
+	- Edge IXBAR_READ mod_header_t_0
+ Stage #2
+     get_rndnum_t_0 2 2
+	- Edge ACTION_READ set_meter_t_0
+     get_and_set_reader_t_0 3 3
+	- Edge IXBAR_READ get_writer_t_0
+     get_aver_qdepth_t_1 2 2
+	- Edge ACTION_READ get_and_set_sum_qdepth_t_0
+ Stage #3
+     get_diff_t_0 1 1
+	- Edge IXBAR_READ get_rndnum_t_0
+     tbl_asicred917 2 2
+	- Edge ACTION_READ get_and_set_reader_t_0
+     get_ewma_t_0 2 2
+	- Edge CONTROL_COND_FALSE tbl_asicred917
+     get_weighted_qdepth_t_0 1 1
+	- Edge ACTION_READ get_aver_qdepth_t_1
+ Stage #4
+     drop_t_0 0 0
+	- Edge ACTION_READ get_diff_t_0
+     get_qdepth_t_0 1 1
+	- Edge OUTPUT get_ewma_t_0
+	- Edge ACTION_READ get_ewma_t_0
+     set_qdepth_t_0 0 0
+	- Edge IXBAR_READ get_weighted_qdepth_t_0
+ Stage #5
+     map_qdepth_to_prob_t_0 0 0
+	- Edge IXBAR_READ get_qdepth_t_0
+     map_qdepth_to_prob_t_0 0 0
+	- Edge CONTROL_TABLE_MISS map_qdepth_to_prob_t_0
+	- Edge IXBAR_READ get_qdepth_t_0
+

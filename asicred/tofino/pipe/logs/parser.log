@@ -1,0 +1,101 @@
+ingress::parse_p4_header is split into 3 states:
+  ingress::parse_p4_header
+  ingress::parse_p4_header.$split_0
+  ingress::parse_p4_header.$split_1
+ingress::start is split into 3 states:
+  ingress::start
+  ingress::start.$split_0
+  ingress::start.$split_1
+egress::parse_p4_header is split into 2 states:
+  egress::parse_p4_header
+  egress::parse_p4_header.$split_0
+egress::parse_tcp is split into 2 states:
+  egress::parse_tcp
+  egress::parse_tcp.$split_0
+egress::start is split into 3 states:
+  egress::start
+  egress::start.$split_0
+  egress::start.$split_1
+allocated { $byte1 } to {  [ egress::start.$split_1 : inbuf bit[8..15] hdr.ipv4/ipv4.protocol; ] }
+allocated { $byte1 } to {  [ ingress::start.$split_1 : inbuf bit[-56..-49] hdr.ipv4/ipv4.protocol; ] }
+ComputeLoweredParserIR preorder on Header : header ingress_intrinsic_metadata_t @__intrinsic_metadata {
+  @__intrinsic_metadata bit<1> resubmit_flag;
+  @padding @__intrinsic_metadata bit<1> _pad1;
+  @__intrinsic_metadata bit<2> packet_version;
+  @padding @__intrinsic_metadata bit<3> _pad2;
+  @__intrinsic_metadata bit<9> ingress_port;
+  @__intrinsic_metadata bit<48> ingress_mac_tstamp; }
+ComputeLoweredParserIR preorder on Header : header ethernet_h {
+  bit<48> dst_addr;
+  bit<48> src_addr;
+  bit<16> ether_type; }
+ComputeLoweredParserIR preorder on Header : header ipv4_h {
+  bit<4> version;
+  bit<4> ihl;
+  bit<8> diffserv;
+  bit<16> total_len;
+  bit<16> identification;
+  bit<3> flags;
+  bit<13> frag_offset;
+  bit<8> ttl;
+  bit<8> protocol;
+  bit<16> hdr_checksum;
+  bit<32> src_addr;
+  bit<32> dst_addr; }
+ComputeLoweredParserIR preorder on Header : header tcp_h {
+  bit<16> src_port;
+  bit<16> dst_port;
+  bit<32> seq_no;
+  bit<32> ack_no;
+  bit<4> data_offset;
+  bit<4> res;
+  bit<8> flags;
+  bit<16> window;
+  bit<16> checksum;
+  bit<16> urgent_ptr; }
+ComputeLoweredParserIR preorder on Header : header p4_header_h {
+  bit<32> tstamp_ig;
+  bit<32> tstamp_eg;
+  bit<3> pad1;
+  bit<5> qid;
+  bit<32> enq_qdepth;
+  bit<8> color;
+  bit<32> qdelta;
+  bit<32> seq_ig;
+  bit<32> seq_eg;
+  bit<7> pad2;
+  bit<9> egress_port;
+  bit<16> drop_prob;
+  bit<32> seq_recirc;
+  bit<32> aver_qdepth; }
+ComputeLoweredParserIR preorder on Header : header udp_h {
+  bit<16> src_port;
+  bit<16> dst_port;
+  bit<16> len;
+  bit<16> checksum; }
+ComputeLoweredParserIR preorder on Header : header egress_intrinsic_metadata_t @__intrinsic_metadata {
+  @padding @__intrinsic_metadata bit<7> _pad0;
+  @__intrinsic_metadata bit<9> egress_port;
+  @padding @__intrinsic_metadata bit<5> _pad1;
+  @__intrinsic_metadata bit<19> enq_qdepth;
+  @padding @__intrinsic_metadata bit<6> _pad2;
+  @__intrinsic_metadata bit<2> enq_congest_stat;
+  @padding @__intrinsic_metadata bit<14> _pad3;
+  @__intrinsic_metadata bit<18> enq_tstamp;
+  @padding @__intrinsic_metadata bit<5> _pad4;
+  @__intrinsic_metadata bit<19> deq_qdepth;
+  @padding @__intrinsic_metadata bit<6> _pad5;
+  @__intrinsic_metadata bit<2> deq_congest_stat;
+  @__intrinsic_metadata bit<8> app_pool_congest_stat;
+  @padding @__intrinsic_metadata bit<14> _pad6;
+  @__intrinsic_metadata bit<18> deq_timedelta;
+  @__intrinsic_metadata bit<16> egress_rid;
+  @padding @__intrinsic_metadata bit<7> _pad7;
+  @__intrinsic_metadata bit<1> egress_rid_first;
+  @padding @__intrinsic_metadata bit<3> _pad8;
+  @__intrinsic_metadata bit<5> egress_qid;
+  @padding @__intrinsic_metadata bit<5> _pad9;
+  @__intrinsic_metadata bit<3> egress_cos;
+  @padding @__intrinsic_metadata bit<7> _pad10;
+  @__intrinsic_metadata bit<1> deflection_flag;
+  @__intrinsic_metadata bit<16> pkt_length; }

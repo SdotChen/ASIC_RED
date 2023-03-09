@@ -1,0 +1,15 @@
+digraph EgressParser{
+start [shape=rectangle,label="start
+(hdr.ipv4.protocol)"]
+parse_tcp [shape=rectangle,label="parse_tcp"]
+parse_udp [shape=rectangle,label="parse_udp"]
+parse_p4_header [shape=rectangle,label="parse_p4_header"]
+accept [shape=rectangle,label="accept"]
+reject [shape=rectangle,label="reject"]
+start -> parse_tcp [label="8w0x6"]
+start -> parse_udp [label="8w0x11"]
+start -> accept [label="default"]
+parse_tcp -> parse_p4_header [label="always"]
+parse_udp -> parse_p4_header [label="always"]
+parse_p4_header -> accept [label="always"]
+}

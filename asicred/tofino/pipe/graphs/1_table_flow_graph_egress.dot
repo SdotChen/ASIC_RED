@@ -1,0 +1,118 @@
+digraph egress {
+mod_dst_mac_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="mod_dst_mac_t_0\l\l
+M:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ hdr.ethernet.dst_addr\l
+ "];
+mod_header_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="mod_header_t_0\l\l
+R:\l
+ eg_intr_md_from_prsr.global_tstamp\l
+ eg_intr_md.enq_qdepth\l
+ eg_intr_md.deq_timedelta\l
+\lW:\l
+ hdr.p4_header.tstamp_eg\l
+ hdr.p4_header.enq_qdepth\l
+ hdr.p4_header.qdelta\l
+ "];
+update_seq_eg_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="update_seq_eg_t_0\l\l
+R:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ hdr.p4_header.seq_eg\l
+ "];
+process_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="process_t_0\l\l
+R:\l
+ eg_intr_md.egress_port\l
+\lW:\l
+ meta.option\l
+ "];
+cond_13 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.option & 1 == 0\l\l
+ "];
+set_writer_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_writer_t_0\l\l
+R:\l
+ meta.option\l
+\l "];
+get_writer_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_writer_t_0\l\l
+R:\l
+ meta.option\l
+\lW:\l
+ meta.num_writer\l
+ "];
+get_and_set_sum_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_and_set_sum_qdepth_t_0\l\l
+R:\l
+ meta.option\l
+ hdr.p4_header.enq_qdepth\l
+\lW:\l
+ meta.sum_qdepth\l
+ "];
+get_aver_qdepth_t_1 [ shape=record, style="filled", fillcolor=cornsilk, label="get_aver_qdepth_t_1\l\l
+R:\l
+ meta.sum_qdepth\l
+\lW:\l
+ meta.aver_qdepth\l
+ "];
+get_weighted_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_weighted_qdepth_t_0\l\l
+R:\l
+ meta.aver_qdepth\l
+\lW:\l
+ meta.weighted_qdepth\l
+ "];
+set_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_qdepth_t_0\l\l
+R:\l
+ meta.option\l
+ meta.weighted_qdepth\l
+\l "];
+get_and_set_reader_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_and_set_reader_t_0\l\l
+R:\l
+ meta.num_writer\l
+\lW:\l
+ meta.drop_recirc\l
+ "];
+cond_14 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.drop_recirc == 1\l\l
+ "];
+tbl_asicred917 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_asicred917\l\l
+W:\l
+ eg_intr_md_for_dprsr.drop_ctl\l
+ "];
+get_ewma_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_ewma_t_0\l\l
+R:\l
+ meta.option\l
+ meta.weighted_qdepth\l
+\lW:\l
+ hdr.p4_header.aver_qdepth\l
+ "];
+get_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_qdepth_t_0\l\l
+R:\l
+ hdr.p4_header.aver_qdepth\l
+\lW:\l
+ hdr.p4_header.aver_qdepth\l
+ meta.qdepth_for_match\l
+ "];
+map_qdepth_to_prob_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="map_qdepth_to_prob_t_0\l\l
+M:\l
+ meta.qdepth_for_match\l
+\lW:\l
+ hdr.p4_header.drop_prob\l
+ "];
+    PARSER -> mod_dst_mac_t_0
+    mod_dst_mac_t_0 -> mod_header_t_0
+    mod_header_t_0 -> update_seq_eg_t_0
+    update_seq_eg_t_0 -> process_t_0
+    process_t_0 -> cond_13
+    cond_13 -> set_writer_t_0
+    cond_13 -> get_writer_t_0
+    set_writer_t_0 -> get_and_set_sum_qdepth_t_0
+    get_and_set_sum_qdepth_t_0 -> get_aver_qdepth_t_1
+    get_aver_qdepth_t_1 -> get_weighted_qdepth_t_0
+    get_weighted_qdepth_t_0 -> set_qdepth_t_0
+    set_qdepth_t_0 -> DEPARSER
+    get_writer_t_0 -> get_and_set_reader_t_0
+    get_and_set_reader_t_0 -> cond_14
+    cond_14 -> tbl_asicred917
+    cond_14 -> get_ewma_t_0
+    tbl_asicred917 -> DEPARSER
+    get_ewma_t_0 -> get_qdepth_t_0
+    get_qdepth_t_0 -> map_qdepth_to_prob_t_0
+    map_qdepth_to_prob_t_0 -> DEPARSER
+}

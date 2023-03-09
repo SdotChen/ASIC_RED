@@ -1,0 +1,113 @@
+digraph ingress {
+cond_8 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_intr_md.ingress_port == 68\l\l
+ "];
+drop_recirc_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="drop_recirc_t_0\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+cond_9 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_intr_md.ingress_port == 8 || ig_intr_md.ingress_port == 60\l\l
+ "];
+cond_10 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_intr_md.ingress_port == 68\l\l
+ "];
+multicast_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="multicast_t_0\l\l
+W:\l
+ ig_intr_md_for_tm.mcast_grp_a\l
+ hdr.p4_header.egress_port\l
+ "];
+set_p4_header_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_p4_header_t_0\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+ ig_intr_md_for_tm.qid\l
+\lW:\l
+ hdr.p4_header.seq_eg\l
+ hdr.p4_header.tstamp_ig\l
+ hdr.p4_header.pad1\l
+ hdr.p4_header.qid\l
+ hdr.p4_header.enq_qdepth\l
+ hdr.p4_header.tstamp_eg\l
+ hdr.p4_header.qdelta\l
+ hdr.p4_header.pad2\l
+ hdr.p4_header.drop_prob\l
+ hdr.p4_header.aver_qdepth\l
+ "];
+set_meter_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_meter_t_0\l\l
+W:\l
+ hdr.p4_header.color\l
+ "];
+update_seq_ig_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="update_seq_ig_t_0\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ hdr.p4_header.seq_ig\l
+ "];
+set_drop_prob_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_drop_prob_t_0\l\l
+R:\l
+ hdr.p4_header.drop_prob\l
+\l "];
+get_drop_prob_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_drop_prob_t_0\l\l
+R:\l
+ hdr.p4_header.drop_prob\l
+\lW:\l
+ meta.drop_prob\l
+ "];
+set_seq_recirc_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_seq_recirc_t_0\l\l
+ "];
+set_aver_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="set_aver_qdepth_t_0\l\l
+R:\l
+ hdr.p4_header.aver_qdepth\l
+\l "];
+cond_11 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.p4_header.color[1:1] == 1\l\l
+ "];
+get_seq_recirc_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_seq_recirc_t_0\l\l
+W:\l
+ hdr.p4_header.seq_recirc\l
+ "];
+get_aver_qdepth_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_aver_qdepth_t_0\l\l
+R:\l
+ hdr.p4_header.aver_qdepth\l
+\lW:\l
+ hdr.p4_header.aver_qdepth\l
+ "];
+get_rndnum_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_rndnum_t_0\l\l
+W:\l
+ meta.rndnum\l
+ "];
+get_diff_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_diff_t_0\l\l
+R:\l
+ meta.drop_prob\l
+\lW:\l
+ meta.diff\l
+ "];
+cond_12 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.diff == 0\l\l
+ "];
+drop_t_0 [ shape=record, style="filled", fillcolor=cornsilk, label="drop_t_0\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+    PARSER -> cond_8
+    cond_8 -> drop_recirc_t_0
+    PARSER -> cond_8
+    cond_8 -> cond_9
+    drop_recirc_t_0 -> cond_10
+    cond_9 -> multicast_t_0
+    cond_9 -> cond_10
+    multicast_t_0 -> set_p4_header_t_0
+    set_p4_header_t_0 -> set_meter_t_0
+    set_meter_t_0 -> update_seq_ig_t_0
+    update_seq_ig_t_0 -> cond_10
+    cond_10 -> set_drop_prob_t_0
+    cond_10 -> get_drop_prob_t_0
+    set_drop_prob_t_0 -> set_seq_recirc_t_0
+    set_seq_recirc_t_0 -> set_aver_qdepth_t_0
+    set_aver_qdepth_t_0 -> cond_11
+    get_drop_prob_t_0 -> get_seq_recirc_t_0
+    get_seq_recirc_t_0 -> get_aver_qdepth_t_0
+    get_aver_qdepth_t_0 -> cond_11
+    cond_11 -> get_rndnum_t_0
+    cond_11 -> DEPARSER
+    get_rndnum_t_0 -> get_diff_t_0
+    get_diff_t_0 -> cond_12
+    cond_12 -> drop_t_0
+    cond_12 -> DEPARSER
+    drop_t_0 -> DEPARSER
+}
